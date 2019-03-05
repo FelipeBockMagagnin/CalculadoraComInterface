@@ -4,20 +4,37 @@
  * and open the template in the editor.
  */
 
+        
+
+        
 /**
  *
  * @author felipe.090999
  */
 public class Calculadora {
-    int Soma(int a, int b){
-        return a + b;
+    String Soma(String expressao){
+        return "a";
     }
     
-    int Sub(int a, int b){
-        return a - b;
+    String Sub(String expressao){
+        return "a";
     }
     
-    int Multi(int a, int b){
-        return a * b;
+    String Multi(String expressao){
+        //pega uma string
+        //resolver a parte da string com a multiplicação
+        //tirar da strign os valores n resolvidos 
+        //e por de volta os valores resolvidos
+        
+        
+        
+        
+        
+        
+        return "a";
+    }
+    
+    String Div (String expressao){
+        return "a";
     }
 }
