@@ -256,40 +256,16 @@ public class Janela extends javax.swing.JFrame {
 
     private void jButtonIgualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIgualActionPerformed
         //pegar a expressao
-        String expressao = jTextField1.getText();
+        String expressao = inter.Contar("13-233+54-34+434*4/2");
         
-        //saber qual a primeira expressao a ser feita 
-        int primeiraExpressao = inter.SaberPrimeiraConta(expressao);
-        
-        //realizar contar ate terminar tudo
-        while (primeiraExpressao != 0){
-            switch(primeiraExpressao)
-            {
-                case 1:
-                    //parenteses
-                    
-                    break;
-                    
-                case 2:
-                    //multiplicação
-                    expressao = calculadora.Multi(expressao);
-                    break;
-                
-                case 3:
-                    //divisão
-                    expressao = calculadora.Div(expressao);
-                    break;
-                    
-                case 4:
-                    //soma
-                    expressao = calculadora.Soma(expressao);
-                    break;
-                    
-                case 5:
-                    expressao = calculadora.Sub(expressao);
-                    break;
-            }
+        while (expressao.contains("-"))
+        {
+            expressao = inter.Contar(expressao);
         }
+        
+        System.out.println("Expressão: " + expressao);
+        
+        
         jTextField1.setText(expressao);
     }//GEN-LAST:event_jButtonIgualActionPerformed
 
