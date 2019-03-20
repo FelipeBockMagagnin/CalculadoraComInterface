@@ -65,19 +65,15 @@ public class TesteInterpretador {
     {
         String expressao = "13-233+54-34+434*4/2";
         
-        String ResultEsperado = "negative668";
+        String ResultEsperado = "668";
         
-        
-        while(expressao.contains("-"))
+        while(inter.SaberConta(expressao) != 0)
         {
             expressao = inter.Contar(expressao);
         }
         
         String ResultEncontrado= expressao;
         
-        assertEquals(ResultEsperado, ResultEncontrado); 
-        
-    }
-    
-    
+        assertEquals(ResultEsperado, ResultEncontrado);   
+    }    
 }

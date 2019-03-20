@@ -28,250 +28,112 @@ public class Interpretador {
     {
         if(str.contains("(") || str.contains(")"))
         {
-            return 1;
+            System.out.println("Parenteses");
+            return 1;            
         }
         else if (str.contains("*"))
         {
-            calc.Multi(str);
+            System.out.println("Multi");
             return 2;            
         } 
         else if (str.contains("/"))
         {
-            calc.Div(str);
+            System.out.println("Div");
             return 3;
         } 
         else if (str.contains("+"))
         {
-            calc.Soma(str);
+            System.out.println("soma");
             return 4;
         } 
         else if (str.contains("-"))
         {
-            calc.Sub(str);
+            System.out.println("Sub");
             return 5;
         } 
         else 
         {
+            System.out.println("Fim");
             return 0; 
         }       
     }
     
+    public String ResolveParenteses(String str){
+        String expressaoCompleta = str;
+        String expressaoRetirada = RetiraParenteses(str);   
+        
+        expressaoRetirada = Contar(expressaoRetirada);  
+
+        expressaoCompleta = expressaoCompleta.replaceAll("\\([^()]+\\)", expressaoRetirada);
+        System.out.println("Expressao completa: "+ expressaoCompleta);
+        return expressaoCompleta;
+    }
+    
+    public String RetiraParenteses(String str){              
+        Pattern p = Pattern.compile("\\([^()]+\\)", Pattern.MULTILINE);        
+        Matcher m = p.matcher(str);
+        System.out.println("Expressao: " + str);
+        String expressaoRetirada;     
+        
+        if(m.find()){
+            expressaoRetirada = m.group();
+            expressaoRetirada = expressaoRetirada.replaceAll("\\(|\\)", "");
+            System.out.println("Expressao Retirada: " + expressaoRetirada);
+            return expressaoRetirada;
+        } 
+        else {
+            System.out.println("Não deu match");
+            return "0";
+        }        
+    }
     
     public String Contar(String str)
     {
-        //separar em camadas
-        ArrayList<String> numeros = new ArrayList();
-        ArrayList<String> operadores = new ArrayList();     
+        System.out.println("**************************************************************");
+        System.out.println("Expressao: " + str);
+        //corrige pequenos bugs
+        str = str.replaceAll("--", "-");        
+        
+        //cria arrays de numeros e operadores
+        ArrayList<String> numeros;
+        ArrayList<String> operadores;     
         
         numeros = SepararNumeros(str);
         System.out.println("");
         operadores = SepararOperacoes(str);
         System.out.println("");
+     
+        //Descobre a primeira conta a ser resolvida
+        int conta = SaberConta(str);    
         
-        int conta = SaberConta(str);
-        
-        if(conta == 2)
+        if(conta == 1){
+            return ResolveParenteses(str);
+        }
+        else if(conta == 2)
         {
-            //multi
-            int indexMulti = operadores.indexOf("*");
-            System.out.println("Index of Multi: " + indexMulti);            
-            
-            //montar a string e adicionar valores resolvidos
-            String num1 = numeros.get(indexMulti);
-            System.out.println("Num1: " + num1);
-            String num2 = numeros.get(indexMulti+1);
-            System.out.println("Num2: " + num2);           
-            
-            int resultMulti = Integer.parseInt(num1) * Integer.parseInt(num2);            
-            String result = Integer.toString(resultMulti);            
-            System.out.println("Result Multi: " + result);
-            
-            
-            StringBuilder expressao = new StringBuilder();
-            
-            for(int x = 0; x < numeros.size(); x++)
-            {
-                if(x == indexMulti)
-                {
-                    //nao faz nada
-                } 
-                else if(x== (indexMulti+1))
-                {
-                    //adiciona resultado
-                    expressao.append(result);
-                    if(x != numeros.size()-1){
-                        expressao.append(operadores.get(x));
-                    }
-                }
-                else 
-                {
-                    expressao.append(numeros.get(x));
-                    if(x != numeros.size()-1){
-                        expressao.append(operadores.get(x));
-                    }                    
-                }
-                System.out.println(expressao);
-            }
-            System.out.println("Expressao multi resolvida pronto: " + expressao);
-            return expressao.toString();
+            return calc.Multi(str, numeros, operadores);
         }  
         else if (conta == 3)
         {
-            int indexDiv = operadores.indexOf("/");
-            System.out.println("Index of soma: " + indexDiv);            
-            
-            //montar a string e adicionar valores resolvidos
-            String num1 = numeros.get(indexDiv);
-            System.out.println("Num1: " + num1);
-            String num2 = numeros.get(indexDiv+1);
-            System.out.println("Num2: " + num2);           
-            
-            int resultSoma = Integer.parseInt(num1) / Integer.parseInt(num2);            
-            String result = Integer.toString(resultSoma);            
-            System.out.println("Result div: " + result);
-            
-            
-            StringBuilder expressao = new StringBuilder();
-            
-            for(int x = 0; x < numeros.size(); x++)
-            {
-                if(x == indexDiv)
-                {
-                    //nao faz nada
-                } 
-                else if(x== (indexDiv+1))
-                {
-                    //adiciona resultado
-                    expressao.append(result);
-                    if(x != numeros.size()-1){
-                        expressao.append(operadores.get(x));
-                    }
-                }
-                else 
-                {
-                    expressao.append(numeros.get(x));
-                    if(x != numeros.size()-1){
-                        expressao.append(operadores.get(x));
-                    }                    
-                }
-                System.out.println(expressao);
-            }
-            System.out.println("Expressao multi resolvida pronto: " + expressao); 
-            return expressao.toString();
+            return calc.Div(str, numeros, operadores);
         }
         else if(conta == 4)
-        {            
-            int indexSoma = operadores.indexOf("+");
-            System.out.println("Index of soma: " + indexSoma);            
-            
-            //montar a string e adicionar valores resolvidos
-            String num1 = numeros.get(indexSoma);
-            System.out.println("Num1: " + num1);
-            String num2 = numeros.get(indexSoma+1);
-            System.out.println("Num2: " + num2);           
-            
-            int resultSoma = Integer.parseInt(num1) + Integer.parseInt(num2);            
-            String result = Integer.toString(resultSoma);            
-            System.out.println("Result soma: " + result);
-            
-            
-            StringBuilder expressao = new StringBuilder();
-            
-            for(int x = 0; x < numeros.size(); x++)
-            {
-                if(x == indexSoma)
-                {
-                    //nao faz nada
-                } 
-                else if(x== (indexSoma+1))
-                {
-                    //adiciona resultado
-                    expressao.append(result);
-                    if(x != numeros.size()-1){
-                        expressao.append(operadores.get(x));
-                    }
-                }
-                else 
-                {
-                    expressao.append(numeros.get(x));
-                    if(x != numeros.size()-1){
-                        expressao.append(operadores.get(x));
-                    }                    
-                }
-                System.out.println(expressao);
-            }
-            System.out.println("Expressao soma resolvida pronto: " + expressao);
-            return expressao.toString();
-
+        {   
+            return calc.Soma(str, numeros, operadores);
         }
         else if(conta == 5 && operadores.size() > 0)
         {
-            int indexSub = operadores.indexOf("-");
-            System.out.println("Index of Sub: " + indexSub);            
-            
-            //montar a string e adicionar valores resolvidos
-            String num1;
-            
-            if(str.startsWith("-"))
-            {
-                num1 = numeros.get(indexSub);
-                num1 = "-" + num1;
-                System.out.println("Num1: " + num1);
-            } 
-            else 
-            {
-                num1 = numeros.get(indexSub);
-                System.out.println("Num1: " + num1);
-            }
-            
-            String num2 = numeros.get(indexSub+1);
-            System.out.println("Num2: " + num2);           
-            
-            int resultSoma = Integer.parseInt(num1) - Integer.parseInt(num2);            
-            String result = Integer.toString(resultSoma);            
-            System.out.println("Result sub: " + result);
-            
-            
-            StringBuilder expressao = new StringBuilder();
-            
-            for(int x = 0; x < numeros.size(); x++)
-            {
-                if(x == indexSub)
-                {
-                    //nao faz nada
-                } 
-                else if(x == (indexSub+1))
-                {
-                    //adiciona resultado
-                    expressao.append(result);
-                    if(x != numeros.size()-1){
-                        expressao.append(operadores.get(x));
-                    }
-                }
-                else 
-                {
-                    expressao.append(numeros.get(x));
-                    if(x != numeros.size()-1){
-                        expressao.append(operadores.get(x));
-                    }                    
-                }
-                System.out.println(expressao);
-            }
-            System.out.println("Expressao sub resolvida pronto: " + expressao);
-            return expressao.toString();
+            return calc.Sub(str, numeros, operadores);
         }
         else 
         {
             return str.replace("-", "negative");
-            
         }        
     }
     
     public ArrayList<String> SepararNumeros(String str)
     {
-        //expressão para separar em camadas
-        //(\w++\+)|(\w++\*)|(\w++\/)|(\w++\-)|(\w++)
-        
+        //separa todos os numeros da expressao e retorna um array
         ArrayList<String> numeros = new ArrayList();        
         Pattern p = Pattern.compile("(?<=-|\\+|\\*|\\/)\\-\\d+|\\d+");        
         Matcher m = p.matcher(str);
@@ -292,9 +154,7 @@ public class Interpretador {
     
     public ArrayList<String> SepararOperacoes(String str)
     {
-        //expressão para separar em camadas
-        //(\w++\+)|(\w++\*)|(\w++\/)|(\w++\-)|(\w++)
-                
+        //Separa todos os operadores da expressão sem contar o - de numeros
         ArrayList<String> operacoes = new ArrayList();        
         Pattern p = Pattern.compile("((?<!\\-)\\+|\\*|\\/)|((?<=\\d|\\n)\\-)");        
         Matcher m = p.matcher(str);

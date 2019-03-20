@@ -256,9 +256,9 @@ public class Janela extends javax.swing.JFrame {
 
     private void jButtonIgualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIgualActionPerformed
         //pegar a expressao
-        String expressao = inter.Contar("13-233+54-34+434*4/2");
+        String expressao = inter.Contar("13-233+(54-3+(30))+434*4/2");
         
-        while (expressao.contains("-"))
+        while (inter.SaberConta(expressao) != 0)
         {
             expressao = inter.Contar(expressao);
         }
