@@ -17,6 +17,7 @@ public class Janela extends javax.swing.JFrame {
         initComponents();
         calculadora = new Calculadora();
         inter = new Interpretador();
+        isOperacao = false;
     }
 
     /**
@@ -75,11 +76,8 @@ public class Janela extends javax.swing.JFrame {
             }
         });
         jPanel4.add(jButtonCE);
-
-        jButton11.setText("C");
         jPanel4.add(jButton11);
 
-        jButton13.setText("<--");
         jButton13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonPressed(evt);
@@ -191,7 +189,7 @@ public class Janela extends javax.swing.JFrame {
         });
         jPanel4.add(jButtonSoma);
 
-        jButton12.setText("+/-");
+        jButton12.setText("(");
         jButton12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonPressed(evt);
@@ -207,7 +205,7 @@ public class Janela extends javax.swing.JFrame {
         });
         jPanel4.add(jButtonC);
 
-        jButton10.setText(".");
+        jButton10.setText(")");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonPressed(evt);
@@ -250,22 +248,28 @@ public class Janela extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    boolean isOperacao;
+    boolean isOperacaoUltimoInput;
+    
     private void jButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPressed
-        jTextField1.setText(jTextField1.getText() + ((javax.swing.JButton)evt.getSource()).getText());
+        
+        //Verifica se o puniltimo e o ultimo input foram operações
+        //Não deixa operações em sequencia
+        String input = ((javax.swing.JButton)evt.getSource()).getText();  
+        isOperacaoUltimoInput = (input.equals("+") | input.equals("-") | input.equals("/") | input.equals("*"));
+        if(!isOperacao | !isOperacaoUltimoInput){
+            jTextField1.setText(jTextField1.getText() + input);
+        }        
+        isOperacao = (input.equals("+") | input.equals("-") | input.equals("/") | input.equals("*"));        
     }//GEN-LAST:event_jButtonPressed
 
     private void jButtonIgualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIgualActionPerformed
         //pegar a expressao
-        String expressao = inter.Contar("13-233+(54-3+(30))+434*4/2");
-        
-        while (inter.SaberConta(expressao) != 0)
+        String expressao = jTextField1.getText();        
+        while (inter.SaberConta(expressao) != OperacoesEnum.nenhuma)
         {
             expressao = inter.Contar(expressao);
-        }
-        
-        System.out.println("Expressão: " + expressao);
-        
-        
+        }            
         jTextField1.setText(expressao);
     }//GEN-LAST:event_jButtonIgualActionPerformed
 

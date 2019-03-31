@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,45 +21,88 @@ public class TesteCalculadora {
     }
 
     // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
+    // The methods must be annotated with annotation @Test. For example
+    
+    
+    ArrayList<String> numeros = new ArrayList();
+    ArrayList<String> operacoes = new ArrayList();
+    String str;
+    
     @Test
     public void TesteSoma() 
     {
-        double a = 5;
-        double b = 5;
-        double resultEsperado = 10;
-        //double resultado = calc.Soma("5 + 5");
-        //(resultado, 0, resultEsperado);
+        numeros.clear();
+        numeros.add("3");
+        numeros.add("4");
+        operacoes.add("+");
+        str = "3+4";
+        String resultEsperado = "7";
+        String resultado = calc.Soma(str, numeros, operacoes);
+        assertEquals(resultado, resultEsperado);
+        ParaBonito(str, resultado, resultEsperado, "Soma");
     }
     
     @Test 
     public void TesteSub()
     {
-        double a = 5;
-        double b = 5;
-        double resultEsperado = 0;
-        //double resultado = calc.Sub("5 - 5");
-        //assertEquals(resultado, 0, resultEsperado);
+        numeros.clear();
+        numeros.add("3");
+        numeros.add("4");
+        operacoes.add("-");
+        str = "3-4";
+        String resultEsperado = "-1";
+        String resultado = calc.Sub(str, numeros, operacoes);
+        assertEquals(resultado, resultEsperado);
+        ParaBonito(str, resultado, resultEsperado, "Sub");
     }
     
     @Test 
     public void TesteDiv()
     {
-        double a = 5;
-        double b = 5;
-        double resultEsperado = 1;
-        //double resultado = calc.Div(a,b);
-        //assertEquals(resultado, 0, resultEsperado);
+        numeros.clear();
+        numeros.add("8");
+        numeros.add("4");
+        operacoes.add("/");
+        str = "8/4";
+        String resultEsperado = "2";
+        String resultado = calc.Div(str, numeros, operacoes);
+        assertEquals(resultado, resultEsperado);
+        ParaBonito(str, resultado, resultEsperado, "Divisão");
+    }
+    
+    @Test (expected = ArithmeticException.class)
+    public void TesteDivZero()
+    {
+        numeros.clear();
+        numeros.add("8");
+        numeros.add("0");
+        operacoes.add("/");
+        str = "8/0";
+        String resultEsperado = "0";
+        String resultado = calc.Div(str, numeros, operacoes);
+        assertEquals(resultado, resultEsperado);
+        ParaBonito(str, resultado, resultEsperado, "Divisão");
     }
     
     @Test 
     public void TesteMulti()
     {
-        double a = 5;
-        double b = 5;
-        double resultEsperado = 25;
-        //double resultado = calc.Div(a,b);
-        //assertEquals(resultado, 0, resultEsperado);
+        numeros.clear();
+        numeros.add("8");
+        numeros.add("2");
+        operacoes.add("*");
+        str = "8*2";
+        String resultEsperado = "16";
+        String resultado = calc.Multi(str, numeros, operacoes);
+        assertEquals(resultado, resultEsperado);
+        ParaBonito(str, resultado, resultEsperado, "Multiplicação");
     }    
+    
+    void ParaBonito(String str, String resultEsperado, String resultado, String conta){
+        System.out.println("***********Teste " + conta + "***********");
+        System.out.println("Expressão: " + str);
+        System.out.println("Resultado Esperado: " + resultEsperado);
+        System.out.println("Resultado Obtido: " + resultado);
+        System.out.println("*******************************");
+    }
 }

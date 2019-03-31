@@ -21,6 +21,24 @@ public class TesteInterpretador {
         inter = new Interpretador();        
     }   
     
+    @Test 
+    public void TesteRetiraParenteses()
+    {
+        String expressao = "10+(30+10*20)";        
+        String ResultEsperado = "30+10*20";        
+        String ResultEncontrado = inter.RetiraParenteses(expressao);        
+        assertEquals(ResultEsperado, ResultEncontrado);
+    }
+    
+    @Test
+    public void TesteResolveParenteses()
+    {
+        String expressao = "80+90*(30+10)";        
+        String ResultEsperado = "80+90*40";        
+        String ResultEncontrado = inter.ResolveParenteses(expressao);        
+        assertEquals(ResultEsperado, ResultEncontrado);
+    }
+    
     @Test
     public void TesteSepararOperacoes()
     {
@@ -34,7 +52,7 @@ public class TesteInterpretador {
         ResultEsperado.add("*");
         ResultEsperado.add("/");
         
-        ArrayList<String> ResultEncontrado = new ArrayList();
+        ArrayList<String> ResultEncontrado;
         ResultEncontrado = inter.SepararOperacoes(expressao);
         
         assertEquals(ResultEsperado, ResultEncontrado);       
@@ -54,7 +72,7 @@ public class TesteInterpretador {
         ResultEsperado.add("4");
         ResultEsperado.add("2");
         
-        ArrayList<String> ResultEncontrado = new ArrayList();
+        ArrayList<String> ResultEncontrado;
         ResultEncontrado = inter.SepararNumeros(expressao);
         
         assertEquals(ResultEsperado, ResultEncontrado);       
@@ -63,11 +81,11 @@ public class TesteInterpretador {
     @Test
     public void TesteContar()
     {
-        String expressao = "13-233+54-34+434*4/2";
+        String expressao = "13-233+54-34+(54-32+4)+434*4/2";
         
-        String ResultEsperado = "668";
+        String ResultEsperado = "694";
         
-        while(inter.SaberConta(expressao) != 0)
+        while(inter.SaberConta(expressao) != OperacoesEnum.nenhuma)
         {
             expressao = inter.Contar(expressao);
         }

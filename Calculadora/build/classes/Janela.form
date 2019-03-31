@@ -79,14 +79,8 @@
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton11">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="C"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton13">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;--"/>
-          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonPressed"/>
           </Events>
@@ -197,7 +191,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton12">
           <Properties>
-            <Property name="text" type="java.lang.String" value="+/-"/>
+            <Property name="text" type="java.lang.String" value="("/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonPressed"/>
@@ -213,7 +207,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton10">
           <Properties>
-            <Property name="text" type="java.lang.String" value="."/>
+            <Property name="text" type="java.lang.String" value=")"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonPressed"/>

@@ -16,49 +16,55 @@ import java.util.regex.Pattern;
 public class Interpretador {
 
     Calculadora calc = new Calculadora();
-    
-    //retorna o valor da primeira conta 
-    // 0 = Nenhuma conta
-    // 1 = parenteses
-    // 2 = multiplicação
-    // 3 = divisão
-    // 4 = soma 
-    // 5 = subtração
-    public int SaberConta(String str)
-    {
+   
+    /**
+     * retorna o valor da primeira conta de acordo com enum operacoes
+     * 
+     * @param str
+     * @return 
+     */
+    public OperacoesEnum SaberConta(String str)
+    {        
         if(str.contains("(") || str.contains(")"))
         {
             System.out.println("Parenteses");
-            return 1;            
+            return OperacoesEnum.parenteses;            
         }
         else if (str.contains("*"))
         {
             System.out.println("Multi");
-            return 2;            
+            return OperacoesEnum.multiplicacao;            
         } 
         else if (str.contains("/"))
         {
             System.out.println("Div");
-            return 3;
+            return OperacoesEnum.divisao;
         } 
         else if (str.contains("+"))
         {
             System.out.println("soma");
-            return 4;
-        } 
-        else if (str.contains("-"))
+            return OperacoesEnum.soma;
+        }   
+        else if (str.contains("-") & str.lastIndexOf("-") > 0)
         {
             System.out.println("Sub");
-            return 5;
+            return OperacoesEnum.subtracao;
         } 
         else 
         {
             System.out.println("Fim");
-            return 0; 
+            return OperacoesEnum.nenhuma; 
         }       
     }
     
-    public String ResolveParenteses(String str){
+    /**
+     * resolve os parenteses de uma expressão
+     * 
+     * @param str
+     * @return 
+     */
+    public String ResolveParenteses(String str)
+    {
         String expressaoCompleta = str;
         String expressaoRetirada = RetiraParenteses(str);   
         
@@ -69,7 +75,14 @@ public class Interpretador {
         return expressaoCompleta;
     }
     
-    public String RetiraParenteses(String str){              
+    /**
+     * retira os parenteses da expressão
+     * 
+     * @param str
+     * @return 
+     */
+    public String RetiraParenteses(String str)
+    {              
         Pattern p = Pattern.compile("\\([^()]+\\)", Pattern.MULTILINE);        
         Matcher m = p.matcher(str);
         System.out.println("Expressao: " + str);
@@ -87,6 +100,12 @@ public class Interpretador {
         }        
     }
     
+    /**
+     * Faz a conta escolhendo a ordem certa a se seguir
+     * 
+     * @param str
+     * @return 
+     */
     public String Contar(String str)
     {
         System.out.println("**************************************************************");
@@ -104,33 +123,31 @@ public class Interpretador {
         System.out.println("");
      
         //Descobre a primeira conta a ser resolvida
-        int conta = SaberConta(str);    
+        OperacoesEnum conta = SaberConta(str);    
         
-        if(conta == 1){
-            return ResolveParenteses(str);
+        switch(conta){
+            case parenteses: 
+                return ResolveParenteses(str);         
+            case multiplicacao:
+                return calc.Multi(str, numeros, operadores);
+            case divisao:
+                return calc.Div(str, numeros, operadores);
+            case soma:
+                return calc.Soma(str, numeros, operadores);
+            case subtracao:
+                if(operadores.size() > 0) return calc.Sub(str, numeros, operadores);
+                else return str;
+            default:
+                return str;
         }
-        else if(conta == 2)
-        {
-            return calc.Multi(str, numeros, operadores);
-        }  
-        else if (conta == 3)
-        {
-            return calc.Div(str, numeros, operadores);
-        }
-        else if(conta == 4)
-        {   
-            return calc.Soma(str, numeros, operadores);
-        }
-        else if(conta == 5 && operadores.size() > 0)
-        {
-            return calc.Sub(str, numeros, operadores);
-        }
-        else 
-        {
-            return str.replace("-", "negative");
-        }        
     }
     
+    /**
+     * Separa numeror utilizando de regex
+     * 
+     * @param str
+     * @return 
+     */
     public ArrayList<String> SepararNumeros(String str)
     {
         //separa todos os numeros da expressao e retorna um array
@@ -152,6 +169,12 @@ public class Interpretador {
         return numeros;      
     }
     
+    /**
+     * Separa operações utilizando de regex
+     * 
+     * @param str
+     * @return 
+     */
     public ArrayList<String> SepararOperacoes(String str)
     {
         //Separa todos os operadores da expressão sem contar o - de numeros
