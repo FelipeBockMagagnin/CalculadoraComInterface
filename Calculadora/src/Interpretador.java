@@ -96,7 +96,7 @@ public class Interpretador {
         } 
         else {
             System.out.println("Não deu match");
-            return "0";
+            throw new NumberFormatException();
         }        
     }
     

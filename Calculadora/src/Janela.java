@@ -268,7 +268,13 @@ public class Janela extends javax.swing.JFrame {
         String expressao = jTextField1.getText();        
         while (inter.SaberConta(expressao) != OperacoesEnum.nenhuma)
         {
-            expressao = inter.Contar(expressao);
+            try{
+                expressao = inter.Contar(expressao);
+            } catch(NumberFormatException e){
+                expressao = "Parenteses dispostos incorretamente";
+            } catch(ArithmeticException e){
+                expressao = "Impossivel dividir por 0";
+            }
         }            
         jTextField1.setText(expressao);
     }//GEN-LAST:event_jButtonIgualActionPerformed
